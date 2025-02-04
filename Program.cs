@@ -18,7 +18,7 @@ namespace RobotUpdateTimberSections
         {
             if (args.Length != 1)
             {
-                System.Console.WriteLine("Invalid number of arguments provided");
+                Console.WriteLine("Invalid number of arguments provided");
                 return;
             }
 
@@ -32,6 +32,8 @@ namespace RobotUpdateTimberSections
 
             RobotApplication robotApp = new();
             RobotLabelServer robotLabelServer = robotApp.Project.Structure.Labels;
+            robotApp.Project.Preferences.Materials.Load("Eurocode");
+            string sectionName = "TIMBER";
 
             foreach (var (section, idsList) in groupedIds)
             {
@@ -42,7 +44,7 @@ namespace RobotUpdateTimberSections
                 // Add section to the model's currently used sections
                 IRobotLabel sectionLabel = robotLabelServer.Create(IRobotLabelType.I_LT_BAR_SECTION, $"Timber {section}");
                 RobotBarSectionData sectionData = (RobotBarSectionData)sectionLabel.Data;
-                sectionData.MaterialName = "TIMBER";
+                sectionData.MaterialName = sectionName;
                 sectionData.Type = IRobotBarSectionType.I_BST_NS_RECT;
                 sectionData.ShapeType = IRobotBarSectionShapeType.I_BSST_RECT_FILLED;
                 RobotBarSectionNonstdData nonStandardSectionData = sectionData.CreateNonstd(0); // parametric section
@@ -57,6 +59,9 @@ namespace RobotUpdateTimberSections
                 string ids = string.Join(" ", idsList);
                 barSelection.FromText(ids);
                 robotApp.Project.Structure.Bars.SetLabel(barSelection, IRobotLabelType.I_LT_BAR_SECTION, sectionLabel.Name);
+
+                // Ensuring the final member material is Timber
+                robotApp.Project.Structure.Bars.SetLabel(barSelection, IRobotLabelType.I_LT_MATERIAL, sectionName);
             }
         }
     }
