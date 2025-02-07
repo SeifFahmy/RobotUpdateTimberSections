@@ -31,6 +31,11 @@ namespace RobotUpdateTimberSections
             }
 
             RobotApplication robotApp = new();
+            if (robotApp.Project.FileName == null)
+            {
+                throw new Exception("Robot model not open.");
+            }
+
             RobotLabelServer robotLabelServer = robotApp.Project.Structure.Labels;
             robotApp.Project.Preferences.Materials.Load("Eurocode");
             string sectionName = "TIMBER";
