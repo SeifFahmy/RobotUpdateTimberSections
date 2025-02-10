@@ -38,7 +38,7 @@ namespace RobotUpdateTimberSections
 
             RobotLabelServer robotLabelServer = robotApp.Project.Structure.Labels;
             robotApp.Project.Preferences.Materials.Load("Eurocode");
-            string sectionName = "TIMBER";
+            string materialName = "TIMBER";
 
             foreach (var (section, idsList) in groupedIds)
             {
@@ -49,7 +49,7 @@ namespace RobotUpdateTimberSections
                 // Add section to the model's currently used sections
                 IRobotLabel sectionLabel = robotLabelServer.Create(IRobotLabelType.I_LT_BAR_SECTION, $"Timber {section}");
                 RobotBarSectionData sectionData = (RobotBarSectionData)sectionLabel.Data;
-                sectionData.MaterialName = sectionName;
+                sectionData.MaterialName = materialName;
                 sectionData.Type = IRobotBarSectionType.I_BST_NS_RECT;
                 sectionData.ShapeType = IRobotBarSectionShapeType.I_BSST_RECT_FILLED;
                 RobotBarSectionNonstdData nonStandardSectionData = sectionData.CreateNonstd(0); // parametric section
@@ -66,7 +66,7 @@ namespace RobotUpdateTimberSections
                 robotApp.Project.Structure.Bars.SetLabel(barSelection, IRobotLabelType.I_LT_BAR_SECTION, sectionLabel.Name);
 
                 // Ensuring the final member material is Timber
-                robotApp.Project.Structure.Bars.SetLabel(barSelection, IRobotLabelType.I_LT_MATERIAL, sectionName);
+                robotApp.Project.Structure.Bars.SetLabel(barSelection, IRobotLabelType.I_LT_MATERIAL, materialName);
             }
         }
     }
