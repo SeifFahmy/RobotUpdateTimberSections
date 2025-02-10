@@ -18,16 +18,14 @@ namespace RobotUpdateTimberSections
         {
             if (args.Length != 1)
             {
-                Console.WriteLine("Invalid number of arguments provided");
-                return;
+                throw new Exception("Invalid number of arguments provided");
             }
 
             var jsonData = args[0];
             var groupedIds = JsonConvert.DeserializeObject<Dictionary<string, List<int>>>(jsonData);
             if (groupedIds == null)
             {
-                Console.WriteLine("Invalid number of arguments provided");
-                return;
+                throw new Exception("Invalid member section data provided");
             }
 
             RobotApplication robotApp = new();
